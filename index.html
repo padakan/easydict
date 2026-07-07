@@ -132,6 +132,11 @@
   }
   .state h2{font-size:20px;font-weight:700;color:var(--label);margin:0 0 7px;}
   .state p{font-size:15px;margin:0;max-width:300px;}
+  .tip{display:flex;gap:13px;align-items:flex-start;padding:14px 18px;border-bottom:.5px solid var(--hairline);}
+  .tip:last-child{border-bottom:0;}
+  .tip-n{flex:0 0 auto;width:23px;height:23px;border-radius:50%;background:var(--tint);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;}
+  .tip-t{font-size:15px;line-height:1.5;color:var(--label);}
+  .tip-t b{font-weight:650;}
   .spinner{width:30px;height:30px;border-radius:50%;border:3px solid var(--hairline);border-top-color:var(--tint);animation:spin .8s linear infinite;margin-bottom:14px;}
   @keyframes spin{to{transform:rotate(360deg);}}
 
@@ -147,11 +152,8 @@
   .dock-inner{
     max-width:680px; margin:0 auto;
     display:flex; align-items:center; gap:8px;
-    padding:7px 12px 7px 8px;
-    border-radius:10px;
-    background:var(--fill);
+    padding:5px 10px;
   }
-  .lang{font-size:11px;font-weight:700;letter-spacing:.3px;color:var(--tint);background:var(--card);padding:4px 8px;border-radius:7px;flex:0 0 auto;min-width:34px;text-align:center;}
   .dock svg.mag{flex:0 0 auto;opacity:.5;margin-left:2px;}
   .dock input{border:0;outline:0;background:transparent;flex:1;min-width:0;font-family:var(--sf);font-size:17px;color:var(--label);padding:6px 0;}
   .dock input::placeholder{color:var(--label-2);}
@@ -205,7 +207,6 @@
 
   <div class="dock" id="dock">
     <div class="dock-inner">
-      <span class="lang" id="langTag">TH</span>
       <svg class="mag" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M7 1a6 6 0 1 0 3.7 10.7l3.3 3.3 1.4-1.4-3.3-3.3A6 6 0 0 0 7 1Zm0 2a4 4 0 1 1 0 8 4 4 0 0 1 0-8Z" fill="currentColor"/></svg>
       <input id="q" type="search" inputmode="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="พิมพ์คำไทยหรืออังกฤษ" aria-label="ค้นหา">
       <button class="clear-btn" id="clear" aria-label="ล้างและกลับหน้าแรก"><svg width="11" height="11" viewBox="0 0 11 11"><path d="M1.5 1.5l8 8M9.5 1.5l-8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
@@ -222,7 +223,7 @@
   const clearBtn=document.getElementById('clear');
   const suggBox=document.getElementById('suggestions');
   const dock=document.getElementById('dock');
-  const langTag=document.getElementById('langTag');
+  const langTag={};   // language chip removed; keep a no-op target for existing assignments
   const backBtn=document.getElementById('backBtn');
   const navT=document.getElementById('navT');
   const navS=document.getElementById('navS');
@@ -241,9 +242,15 @@
 
   function setWelcome(){
     backStack=[]; showBack(false); setNavTitle('พจนานุกรม','ไทย ⇄ อังกฤษ');
-    content.innerHTML=`<div class="state">
+    content.innerHTML=`<div class="state" style="padding:52px 32px 24px">
       <div class="ic"><svg width="40" height="40" viewBox="0 0 24 24" fill="none"><path d="M4 5a2 2 0 0 1 2-2h6v18H6a2 2 0 0 1-2-2V5Z" stroke="currentColor" stroke-width="1.5"/><path d="M20 5a2 2 0 0 0-2-2h-6v18h6a2 2 0 0 0 2-2V5Z" stroke="currentColor" stroke-width="1.5"/></svg></div>
-      <h2>เริ่มค้นหา</h2><p>พิมพ์คำภาษาไทยเพื่อแปลเป็นอังกฤษ หรือพิมพ์อังกฤษเพื่อแปลเป็นไทย</p></div>`;
+      <h2>เริ่มค้นหา</h2><p>พิมพ์คำภาษาไทยเพื่อแปลเป็นอังกฤษ หรือพิมพ์อังกฤษเพื่อแปลเป็นไทย</p></div>
+      <div class="group-label">ใช้งานแบบออฟไลน์</div>
+      <div class="card">
+        <div class="tip"><span class="tip-n">1</span><div class="tip-t">เปิดหน้านี้ครั้งแรกตอน<b>มีเน็ต</b> รอให้โหลดข้อมูลเสร็จ</div></div>
+        <div class="tip"><span class="tip-n">2</span><div class="tip-t">เพิ่มลงหน้าจอมือถือ<br><b>iPhone:</b> แตะปุ่มแชร์ → “เพิ่มไปยังหน้าจอโฮม”<br><b>Android:</b> แตะเมนู ⋮ → “เพิ่มลงในหน้าจอหลัก”</div></div>
+        <div class="tip"><span class="tip-n">3</span><div class="tip-t">เปิดจากไอคอนบนหน้าจอ ใช้ได้เลย<b>แม้ปิดเน็ตหรืออยู่บนเครื่องบิน</b></div></div>
+      </div>`;
   }
   function setLoading(){content.innerHTML='<div class="state"><div class="spinner"></div><p>กำลังโหลดพจนานุกรม…</p></div>';}
   function setNotFound(qq){
