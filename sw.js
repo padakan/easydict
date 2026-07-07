@@ -1,7 +1,7 @@
 // Service worker — offline-first caching for the Thai–English dictionary PWA.
 // Bump CACHE_VERSION whenever you change index.html, sw.js, or dict.json
 // so clients pick up the new files.
-const CACHE_VERSION = 'dict-v1';
+const CACHE_VERSION = 'dict-v2';
 const CORE_ASSETS = [
   './',
   './index.html',
